@@ -29,7 +29,7 @@ for(i in seq_along(githubApps)){
         
     if(!file.exists(file.path(gitRepoPath,gitRepo))){
         git2r::clone(url = glue('https://github.com/{gitRepo}.git'),
-                     local_path = glue('{gitRepoPath}/{gitRepo}'))
+                     local_path = file.path(gitRepoPath,gitRepo))
     } else{
         repo = git2r::repository(file.path(gitRepoPath,gitRepo))
         message = git2r::pull(repo)
@@ -47,7 +47,7 @@ for(i in seq_along(githubApps)){
               to = tmp,
               recursive = TRUE)
     
-    file.rename(from = file.path(tmp,basename(withinRepoPath)),
+    file.rename(from = file.path(tmp,basename(file.path(gitRepo,withinRepoPath))),
                 to = file.path(tmp,names(app)))
     
     file.rename(from = file.path(tmp,names(app)),
