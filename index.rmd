@@ -1,0 +1,30 @@
+---
+output: html_document
+params:
+        shinyApps: App directory. set by getGithubApps.R
+        name: Your name. Set by getGithubApps.R
+        domain: path to shiny server. used to create links. set by getGithubApps.R
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(glue)
+```
+
+
+## Shiny server
+
+This is `r name`'s shiny server. Below is the list of shiny apps hosted here:
+
+
+```{r, results='asis',echo=FALSE}
+apps = list.files(shinyApps,recursive = TRUE) %>% 
+    {.[grepl('server.R$|app.R$',.)]} %>% 
+    {.[strsplit(.,'/') %>% sapply(length) %>% {.==2}]} %>% dirname()
+
+apps %>% sapply(function(x){
+    glue('* [{x}]({file.path(domain,x)})')
+}) %>% paste(collapse = '\n') %>% cat
+
+```

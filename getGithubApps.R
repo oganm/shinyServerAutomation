@@ -6,6 +6,10 @@ library(glue)
 # path to shiny apps read by the shiny server
 shinyApps = '/srv/shiny-server/'
 
+name = 'Ogan Mancarci'
+
+domain = 'http://oganm.com/shiny'
+
 # a different path where git repos will be stored
 gitRepoPath = 'appRepos'
 
@@ -54,3 +58,15 @@ for(i in seq_along(githubApps)){
                 to = file.path(shinyApps,names(app)))
 
 }
+
+# not sure if needed temporary measure
+system2('chown', '-R oganm:shiny-apps /srv/shiny-server/.')
+system2('chmod', 'g+w /srv/shiny-server/.')
+system2('chmod', 'g+s /srv/shiny-server/.')
+
+
+rmarkdown::render('index.rmd',params = list(shinyApps = shinyApps,
+                                            name = name,
+                                            domain = domain))
+
+file.copy('index.html',file.path(shinyApps,'index.html'),overwrite = TRUE)
