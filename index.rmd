@@ -24,7 +24,7 @@ apps = list.files(shinyApps,recursive = TRUE) %>%
     {.[strsplit(.,'/') %>% sapply(length) %>% {.==2}]} %>% dirname()
 
 apps %>% sapply(function(x){
-    glue('* [{x}]({file.path(domain,x)})')
+    glue('* [{x}]({file.path(domain,x)}/)')
 }) %>% paste(collapse = '\n') %>% cat
 
 ```
