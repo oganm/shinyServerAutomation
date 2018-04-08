@@ -19,7 +19,7 @@ githubApps = c(interactiveSheet = 'oganm/import5eChar/inst/app',
                printSheetApp = 'oganm/printSheetApp')
 
 
-dir.create('gitRepoPath', showWarnings = FALSE)
+dir.create(gitRepoPath, showWarnings = FALSE)
 
 for(i in seq_along(githubApps)){
     app = githubApps[i]
@@ -56,13 +56,11 @@ for(i in seq_along(githubApps)){
     
     file.rename(from = file.path(tmp,names(app)),
                 to = file.path(shinyApps,names(app)))
-
+    
+    system(glue::glue('chmod -R 777 {shQuote(file.path(shinyApps,names(app)))}'))
+    
+    system2('touch', file.path(shinyApps,names(app),'restart.txt'))
 }
-
-# not sure if needed temporary measure
-system2('chown', '-R oganm:shiny-apps /srv/shiny-server/.')
-system2('chmod', 'g+w /srv/shiny-server/.')
-system2('chmod', 'g+s /srv/shiny-server/.')
 
 
 rmarkdown::render('index.rmd',params = list(shinyApps = shinyApps,
