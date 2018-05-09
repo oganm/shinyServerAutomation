@@ -16,7 +16,9 @@ gitRepoPath = 'appRepos'
 # a named character vector. names are how the app will appear the shiny server, the path is
 # username/reponame/{path to app within the repo}. last bit is optional
 githubApps = c(interactiveSheet = 'oganm/import5eChar/inst/app',
-               printSheetApp = 'oganm/printSheetApp')
+               printSheetApp = 'oganm/printSheetApp',
+               initTrack = 'oganm/initTrack',
+               vasco = 'hackseq/vasco')
 
 
 dir.create(gitRepoPath, showWarnings = FALSE)
