@@ -44,21 +44,26 @@ for(i in seq_along(githubApps)){
             next()
         }
     }
-    unlink(file.path(shinyApps,names(app)),recursive = TRUE, force = TRUE)
+    # unlink(file.path(shinyApps,names(app)),recursive = TRUE, force = TRUE)
 
     tmp = tempdir()
     dir.create(file.path(shinyApps,names(app)))
     
-    file.copy(from  = file.path(gitRepoPath, gitRepo, withinRepoPath),
-              to = tmp,
-              recursive = TRUE)
+    filesToCopy = list.files(file.path(gitRepoPath, gitRepo, withinRepoPath),full.names = TRUE,all.files = TRUE,recursive = TRUE)
     
-    file.rename(from = file.path(tmp,basename(file.path(gitRepo,withinRepoPath))),
-                to = file.path(tmp,names(app)))
     
-    file.rename(from = file.path(tmp,names(app)),
-                to = file.path(shinyApps,names(app)))
-    
+    for (x in filesToCopy){
+        file = x
+        target = gsub(paste0(file.path(gitRepoPath, gitRepo, withinRepoPath),'/'), '', file,fixed = TRUE)
+        targetDir =  file.path(shinyApps,names(app),target)
+        
+        
+        dir.create(dirname(targetDir), recursive = TRUE, showWarnings = FALSE)
+        file.copy(from  = file,
+                  to = targetDir,
+                  recursive = FALSE,
+                  overwrite = TRUE)
+    }
     system(glue::glue('chmod -R 777 {shQuote(file.path(shinyApps,names(app)))}'))
     
     system2('touch', file.path(shinyApps,names(app),'restart.txt'))
