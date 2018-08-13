@@ -20,7 +20,7 @@ This is `r name`'s shiny server. Below is the list of shiny apps hosted here:
 
 ```{r, results='asis',echo=FALSE}
 apps = list.files(shinyApps,recursive = TRUE) %>% 
-    {.[grepl('server.R$|app.R$',.)]} %>% 
+    {.[grepl('server.R$|app.R$|index.Rmd',.)]} %>% 
     {.[strsplit(.,'/') %>% sapply(length) %>% {.==2}]} %>% dirname()
 
 apps %>% sapply(function(x){
