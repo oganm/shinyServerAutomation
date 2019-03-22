@@ -15,10 +15,14 @@ gitRepoPath = 'appRepos'
 
 # a named character vector. names are how the app will appear the shiny server, the path is
 # username/reponame/{path to app within the repo}. last bit is optional
-githubApps = c(interactiveSheet = 'oganm/import5eChar/inst/app',
-               printSheetApp = 'oganm/printSheetApp',
+githubApps = c( interactiveSheet = 'oganm/import5eChar/inst/app' ,
+               printSheetApp = 'oganm/printSheetApp' ,
                initTrack = 'oganm/initTrack',
-               vasco = 'hackseq/vasco')
+               vasco = 'hackseq/vasco',
+               gemmalink = 'oganm/gemmaNameLink',
+               taracyc = 'hackseq/tara-cyc-hs18',
+               swarm = 'oganm/swarm'
+               )
 
 
 dir.create(gitRepoPath, showWarnings = FALSE)
@@ -39,7 +43,7 @@ for(i in seq_along(githubApps)){
     } else{
         repo = git2r::repository(file.path(gitRepoPath,gitRepo))
         message = git2r::pull(repo)
-        if(message@up_to_date){
+        if(message$up_to_date){
             # if up to date,this means we already did this. don't do a thing
             next()
         }
